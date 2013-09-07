@@ -28,7 +28,15 @@ public:
 	//Level Container - all objects in the level are stored here
 	void setContainer(vector<Figure*>* src);
 
+	//sets the level  properties TODO: include background
+	void setHeightWidth(int, int);
+
 	vector<Figure*>* container;
+
+	int x, y;
+
+	int lvlHeight;
+	int lvlWidth;
 
 };
 

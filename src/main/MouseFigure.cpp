@@ -15,6 +15,7 @@ MouseFigure::MouseFigure(int x, int y, Surface& image, SDL_Surface* screen, Grav
 
 	this->className = "MouseFigure";
 	container = NULL;
+	SDL_GetMouseState(&x, &y);
 }
 
 MouseFigure::~MouseFigure() {
@@ -30,21 +31,45 @@ bool MouseFigure::checkCollision(RectFigure* other) {
 
 void MouseFigure::handleInput(SDL_Event& event) {
 	if (event.type == SDL_MOUSEMOTION) {
-		camera->x = p.x = event.motion.x;
-		camera->y = p.y = event.motion.y;
+		p.x = event.motion.x;
+		p.y = event.motion.y;
 	}
 	else if (event.type == SDL_KEYDOWN) {
 		switch (event.key.keysym.sym) {
-			case SDLK_UP:
+			case SDLK_1:{
+				//get location of mouse currently
+				SDL_GetMouseState(&x, &y);
+
+				//add offsets to it based on camera clip
+				x += camera->x;
+				y += camera->y;
+
+				//load image
+				Surface* rect = new Surface("images/rectangle.png");
+
+				//and place the object there
+				RectFigure* newFig = new RectFigure(x, y, *rect, screen, Figure::GRAVITY_DISABLED, false, 0, 0, 0, 1, lvlWidth,
+						lvlHeight, Figure::BOUNDARY);
+
+				printf("Size of container %d -> ",container->size());
+
+				//and place it into the map
+				container->push_back(newFig);
+
+				printf(" %d\n",container->size());
+
+				printf("pushed new object in! at %d %d\n", newFig->getX(),newFig->getY());
+				printf("Current mouse location is: %d, %d \n",x,y);
 
 				break;
-			case SDLK_DOWN:
+			}
+			case SDLK_2:
 				break;
 
-			case SDLK_LEFT:
+			case SDLK_3:
 				break;
 
-			case SDLK_RIGHT:
+			case SDLK_4:
 				break;
 
 			default:
@@ -55,4 +80,9 @@ void MouseFigure::handleInput(SDL_Event& event) {
 
 void MouseFigure::setContainer(vector<Figure*>* src) {
 	container = src;
+}
+
+void MouseFigure::setHeightWidth(int h, int w) {
+	lvlHeight = h;
+	lvlWidth = w;
 }
