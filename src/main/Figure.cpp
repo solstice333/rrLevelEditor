@@ -189,8 +189,6 @@ void Figure::yMovement(vector<Figure*>& other, int deltaTicks) {
    p.y += v.y * deltaTicks / 1000.0;
 
    if (isCollided(other, count) && count != -1) {
-      //TODO Kevin - hey rebel, here's an example of how count works
-      cout << "count: " << count << endl;
 
       resolveCollision(other[count], deltaTicks, YHAT);
    }
@@ -504,13 +502,6 @@ void Figure::showParticles(SDL_Rect* camera) {
 
 SDL_Rect* Figure::getCameraClip() {
    return camera;
-}
-
-/*
- * TODO Rebel: Attempting to fix ledge problem
- */
-void Figure::addHitBoxes(vector<AABB*> allocator) {
-
 }
 
 /*

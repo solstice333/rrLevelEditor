@@ -100,7 +100,8 @@ protected:
    // KEVIN: what about using Figure properties instead of AABB? See
    // RectFigure::checkCollision(RectFigure* r) for an example. In a sense, the variables
    // inside that method make it a "dynamic" AABB
-   vector<AABB*> hitboxes;
+   // REBEL: Yep i agree- no need for it here then
+   //vector<AABB*> hitboxes;
 
    /*
     * Description: contains dimensions of the image
@@ -507,9 +508,6 @@ public:
     * Return: true if collision occurred, false otherwise
     */
    virtual bool isCollided(vector<Figure*>& other, int& count);
-
-   // TODO REBEL: method to add hit boxes
-   void addHitBoxes(vector<AABB*>);
 
    /*
     * Description: resolves collision based on the Component dir passed in i.e.
