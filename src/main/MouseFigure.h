@@ -20,6 +20,8 @@ public:
 	         NULL, Surface* p4 = NULL);
 	~MouseFigure();
 
+	void setPosition(int x, int y);
+
 	void handleInput(SDL_Event&);
 
 	virtual bool checkCollision(CircFigure* other);
@@ -34,6 +36,14 @@ public:
 	vector<Figure*>* container;
 
 	int x, y;
+
+	enum objecttype{
+		none, rect, rectwiths,dot
+	};
+
+	objecttype currentObject;
+
+	MouseFigure* tempObject;
 
 	int lvlHeight;
 	int lvlWidth;
