@@ -17,13 +17,43 @@
 #include <string>
 #include <vector>
 #include "../Figure.h"
+#include <cstdio>
+#include <sstream>
 
 using namespace std;
 
+struct Header{
+	int screen_w;
+	int screen_h;
+	int bg_w;
+	int bg_h;
+	string bg_path;
+	string bgm_path;
+};
+
 class Editor {
 public:
-	void encode(string, vector<Figure*>*);
-	vector<Figure*>* decode(string);
+	enum state{
+		read, write
+	};
+
+public:
+	Editor();
+	Editor(string, state);
+	~Editor();
+
+	void setFile(string,state);
+
+	void writeHeader(Header);
+	Header* readHeader();
+
+	void encode(vector<Figure*>*);
+	vector<Figure*>* decode();
+
+	Header* headerInfo;
+private:
+	FILE* file;
+	void checkFile();
 };
 
 #endif /* EDITOR_H_ */
