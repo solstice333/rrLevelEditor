@@ -18,6 +18,8 @@
 #include <vector>
 #include "../Figure.h"
 #include <cstdio>
+#include <fstream>
+#include <iostream>
 #include <sstream>
 
 using namespace std;
@@ -47,11 +49,14 @@ public:
 	void writeHeader(Header);
 	Header* readHeader();
 
-	void encode(vector<Figure*>*);
+	void encode(vector<Figure*>*,Header lvlInfo);
 	vector<Figure*>* decode();
 
 	Header* headerInfo;
 private:
+	void encodeFigure(Figure* fig, int lvlWidth, int lvlHeight);
+	Figure* decodeFigure();
+
 	FILE* file;
 	void checkFile();
 };

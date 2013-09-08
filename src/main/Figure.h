@@ -95,14 +95,6 @@ protected:
     */
    Marker marker;
 
-   // TODO REBEL: hacking together a solution for ledge problem
-   // custom hitboxes depending on frame (tried to implement this in my engine)
-   // KEVIN: what about using Figure properties instead of AABB? See
-   // RectFigure::checkCollision(RectFigure* r) for an example. In a sense, the variables
-   // inside that method make it a "dynamic" AABB
-   // REBEL: Yep i agree- no need for it here then
-   //vector<AABB*> hitboxes;
-
    /*
     * Description: contains dimensions of the image
     */
@@ -448,6 +440,18 @@ public:
          Surface* p4 = NULL);
 
    /*
+    * Get file path of the image surface;
+    * Used in editor class;
+    */
+   string getFilePath();
+
+   /*
+    * Get the color key of the image surface
+    * Used in editor class
+    */
+   int getColorKey();
+
+   /*
     * Description: obtains the width of the Figure
     */
    virtual int getWidth();
@@ -456,6 +460,11 @@ public:
     * Description: obtains the height of the Figure
     */
    virtual int getHeight();
+
+   /*
+    * Get resolution of this figure
+    */
+   virtual int getResolution();
 
    /*
     * Description: obtains the x position of the Figure

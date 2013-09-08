@@ -160,6 +160,24 @@ public:
     * Description: Destructor for Surface objects
     */
    ~Surface();
+
+   /*
+    * Used for editor - gets file path used for image surface
+    * creation.
+    */
+   string getFilePath();
+
+   /*
+    * Used for editor - gets the color key used during creation
+    */
+   int getColorKey();
+
+private:
+   /*
+    * Made things much easlier by remembering the file path used
+    */
+   string filePath;
+   int colorKey;
 };
 
 /*

@@ -18,6 +18,8 @@ Surface::Surface(SDL_Surface* sdls, Color ck) {
 
 Surface::Surface(string filepath, Color ck) :
       s(loadImage(filepath, ck)) {
+	filePath = filepath;
+	colorKey = ck;
 }
 
 Surface::Surface(string ttfFile, int fontSize, Color textColor, string msg) :
@@ -30,6 +32,8 @@ void Surface::setSDL_Surface(SDL_Surface* surface) {
 
 void Surface::setSDL_Surface(string filepath, Color ck) {
    s = loadImage(filepath, ck);
+   filePath = filepath;
+   colorKey = ck;
 }
 
 void Surface::setSDL_Surface(string ttfFile, int fontSize,
@@ -406,4 +410,12 @@ void cleanUp() {
    Mix_CloseAudio();
    TTF_Quit();
    SDL_Quit();
+}
+
+string Surface::getFilePath() {
+	return filePath;
+}
+
+int Surface::getColorKey() {
+	return colorKey;
 }

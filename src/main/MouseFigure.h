@@ -9,6 +9,7 @@
 #define MOUSEFIGURE_H_
 
 #include "Figure.h"
+#include "Editor/Editor.h"
 
 class MouseFigure: public Figure {
 public:
@@ -32,13 +33,15 @@ public:
 
 	//sets the level  properties TODO: include background
 	void setHeightWidth(int, int);
+	void setHeader(Header*);
 
 	vector<Figure*>* container;
 
 	int x, y;
+	Header* header;
 
 	enum objecttype{
-		none, rect, rectwiths,dot
+		none, rect, rectwiths, dot
 	};
 
 	objecttype currentObject;

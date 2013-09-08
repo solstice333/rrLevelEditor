@@ -36,11 +36,14 @@ const bool TEST_STRING_INPUT = false;
 int main(int argc, char* argv[]) {
 	if (TEST_GRAPHICS) {
 
-		//testing editor
+		//Just for testing
+		//Load background and level defaults
 		Editor edit;
 
-		edit.setFile("test.txt", Editor::read);
+		edit.setFile("default", Editor::read);
 		edit.readHeader();
+
+		Header windowProperties = *edit.headerInfo;
 
 		const int LEVEL_WIDTH = edit.headerInfo->bg_w;
 		const int LEVEL_HEIGHT = edit.headerInfo->bg_h;
@@ -62,14 +65,14 @@ int main(int argc, char* argv[]) {
 
 		RectFigure rf1(300, 525, rect, screen, Figure::GRAVITY_DISABLED, false, 0, 0, 0, 1, LEVEL_WIDTH, LEVEL_HEIGHT,
 				Figure::BOUNDARY, &red, &shimmer);
-		RectFigure rf2(500, 125, rect, screen, Figure::GRAVITY_DISABLED, false, 0, 0, 0, 1, LEVEL_WIDTH, LEVEL_HEIGHT);
+		RectFigure rf2(500, 125, rect, screen, Figure::GRAVITY_ENABLED, false, 0, 0, 0, 1, LEVEL_WIDTH, LEVEL_HEIGHT);
 		CircFigure cf1(700, 525, dot, screen, Figure::GRAVITY_DISABLED, false, 0, 0, 0, 1, LEVEL_WIDTH, LEVEL_HEIGHT);
 		CircFigure cf2(900, 350, dot, screen, Figure::GRAVITY_ENABLED, false, 0, 0, 0, 1, LEVEL_WIDTH, LEVEL_HEIGHT,
 				Figure::BOUNDARY, &red, &green, &blue, &shimmer);
 		RectFigure coin1(600, 325, coin, screen, Figure::GRAVITY_DISABLED, false, 0, 0, 0, 1, LEVEL_WIDTH, LEVEL_HEIGHT,
 				Figure::POINT);
 
-		MouseFigure mouseFig(1, 1, rect, screen, Figure::GRAVITY_DISABLED, false, 0, 0, 0, 1, LEVEL_WIDTH, LEVEL_HEIGHT,
+		MouseFigure mouseFig(1, 1, rect, screen, Figure::GRAVITY_DISABLED, true, 0, 0, 0, 1, LEVEL_WIDTH, LEVEL_HEIGHT,
 				Figure::BOUNDARY);
 
 		bool quit = false;
@@ -77,15 +80,17 @@ int main(int argc, char* argv[]) {
 		Timer timer;
 
 		//container for level Figures
-		vector<Figure*> collisions;
-		collisions.push_back(&rf1);
-		collisions.push_back(&rf2);
-		collisions.push_back(&cf1);
-		collisions.push_back(&cf2);
-		collisions.push_back(&coin1);
+		vector<Figure*>* collisions = NULL;
+
+		//load level
+		Editor loadLevel("level.txt",Editor::read);
+
+		//for reading level
+		collisions = loadLevel.decode();
 
 		mouseFig.setHeightWidth(LEVEL_HEIGHT, LEVEL_WIDTH);
-		mouseFig.setContainer(&collisions);
+		mouseFig.setContainer(collisions);
+		mouseFig.setHeader(edit.headerInfo);
 
 		Music m(edit.headerInfo->bgm_path);
 
@@ -105,13 +110,13 @@ int main(int argc, char* argv[]) {
 				mouseFig.handleInput(event);
 			}
 
-			mouseFig.move(collisions, timer.getTicks());
+			mouseFig.move(*collisions, timer.getTicks());
 			timer.start();
 
 			applySurface(0, 0, bgnd, screen, mouseFig.getCameraClip());
 
-			for (int i = 0; i < (int) collisions.size(); i++) {
-				collisions[i]->show(mouseFig.getCameraClip());
+			for (int i = 0; i < (int) (*collisions).size(); i++) {
+				(*collisions)[i]->show(mouseFig.getCameraClip());
 				if (mouseFig.tempObject != NULL) mouseFig.tempObject->show(mouseFig.getCameraClip());
 			}
 

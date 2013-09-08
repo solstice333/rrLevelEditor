@@ -33,7 +33,9 @@ bool MouseFigure::checkCollision(CircFigure* other) {
 }
 
 bool MouseFigure::checkCollision(RectFigure* other) {
-	return false;
+	if (x <= other->getX() || x >= other->getX() + other->getWidth()) return false;
+	if (y <= other->getY() || y >= other->getY() + other->getHeight()) return false;
+	return true;
 }
 
 void MouseFigure::handleInput(SDL_Event& event) {
@@ -67,6 +69,18 @@ void MouseFigure::handleInput(SDL_Event& event) {
 
 						//and place it into the map
 						container->push_back(newFig);
+						break;
+					}
+					case none: {
+						//figure out which object the mouse is in
+						int index = 0;
+						if (isCollided((*container), index)) {
+							//means we actually are in something
+							//remove from container
+							//TODO: Should I Make invis? Or delete? I don't know
+							delete (*container).at(index);	//calls de-constructor
+							(*container).erase((*container).begin() + index); //remove it
+						}
 						break;
 					}
 				}
@@ -116,6 +130,30 @@ void MouseFigure::handleInput(SDL_Event& event) {
 				}
 				break;
 
+			case SDLK_s: {
+				//save this map to level.txt
+				//TODO: probably should allow user to customize this
+
+				Editor saveLevel("level.txt", Editor::write);
+
+				saveLevel.encode(container,*header);
+
+				break;
+			}
+
+			case SDLK_l:{
+				//force load map from level.txt
+				//TODO: Bug - it locks all figures, preventing modification
+				//		Should ideally just reload the map
+
+				Editor loadLevel("level.txt", Editor::read);
+
+				//TODO: actually cleaning up memory here would be nice
+				//		might be what's causing the bug
+				container = loadLevel.decode();
+
+				break;
+			}
 			default:
 				break;
 		}
@@ -134,4 +172,8 @@ void MouseFigure::setPosition(int x, int y) {
 void MouseFigure::setHeightWidth(int h, int w) {
 	lvlHeight = h;
 	lvlWidth = w;
+}
+
+void MouseFigure::setHeader(Header* input) {
+	header = input;
 }

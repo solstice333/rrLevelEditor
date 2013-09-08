@@ -854,3 +854,14 @@ bool CircFigure::checkCollision(CircFigure* c) {
    return false;
 }
 
+string Figure::getFilePath() {
+	return image->getFilePath();
+}
+
+int Figure::getColorKey() {
+	return image->getColorKey();
+}
+
+int Figure::getResolution() {
+	return resolution;
+}
