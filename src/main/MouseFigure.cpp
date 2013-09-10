@@ -134,7 +134,7 @@ void MouseFigure::handleInput(SDL_Event& event) {
 				//save this map to level.txt
 				//TODO: probably should allow user to customize this
 
-				Editor saveLevel("level.txt", Editor::write);
+				Editor saveLevel("resources/level.txt", Editor::write);
 
 				saveLevel.encode(container,*header);
 
