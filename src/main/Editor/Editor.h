@@ -10,13 +10,17 @@
  *      Author: Alles Rebel
  */
 
-
 #ifndef EDITOR_H_
 #define EDITOR_H_
 
 #include <string>
 #include <vector>
 #include "../Figure.h"
+#include "../CircBoundaryFigure.h"
+#include "../RectBoundaryFigure.h"
+#include "../GrabbableFigure.h"
+#include "../TempFigure.h"
+#include "../CursorFigure.h"
 #include <cstdio>
 #include <fstream>
 #include <iostream>
@@ -24,7 +28,7 @@
 
 using namespace std;
 
-struct Header{
+struct Header {
 	int screen_w;
 	int screen_h;
 	int bg_w;
@@ -34,28 +38,39 @@ struct Header{
 };
 
 class Editor {
-public:
-	enum state{
+	public:
+	enum state {
 		read, write
 	};
 
-public:
+	enum types{
+		rectBoundaryFigure,
+		tempFigure,
+		cursorFigure,
+		grabbableFigure,
+		circBoundryFigure
+	};
+
+	public:
 	Editor();
 	Editor(string, state);
 	~Editor();
 
-	void setFile(string,state);
+	void setFile(string, state);
+	void closeFile();
 
 	void writeHeader(Header);
 	Header* readHeader();
 
-	void encode(vector<Figure*>*,Header lvlInfo);
+	void encode(vector<Figure*>*, Header lvlInfo);
 	vector<Figure*>* decode();
 
 	Header* headerInfo;
-private:
+	private:
 	void encodeFigure(Figure* fig, int lvlWidth, int lvlHeight);
 	Figure* decodeFigure();
+
+	Editor::types translateTypeID(Figure*);
 
 	FILE* file;
 	void checkFile();

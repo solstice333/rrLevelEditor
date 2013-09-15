@@ -10,15 +10,18 @@
 
 #include "Figure.h"
 #include "Editor/Editor.h"
+#include "GrabbableFigure.h"
+#include "PlayerFigure.h"
+#include "TempFigure.h"
+#include "RectBoundaryFigure.h"
+#include "CursorFigure.h"
+#include "CircBoundaryFigure.h"
+#include <cmath>
 
 class MouseFigure: public Figure {
-public:
-	MouseFigure(int x, int y, Surface& image, SDL_Surface* screen,
-	         Gravity gravityEnabled, bool leader = false, double speed = 5,
-	         double gravity = 1, double jumpStrength = 1, int numClips = 1,
-	         int levelWidth = -1, int levelHeight = -1, Resolves resolve = BOUNDARY,
-	         Surface* p1 = NULL, Surface* p2 = NULL, Surface* p3 =
-	         NULL, Surface* p4 = NULL);
+	public:
+	MouseFigure(int x, int y, Surface* image, SDL_Surface* screen,
+			int levelWidth, int levelHeight, int numClips);
 	~MouseFigure();
 
 	void setPosition(int x, int y);
@@ -28,6 +31,8 @@ public:
 	virtual bool checkCollision(CircFigure* other);
 	virtual bool checkCollision(RectFigure* other);
 
+	float distance(int x, int y);
+
 	//Level Container - all objects in the level are stored here
 	void setContainer(vector<Figure*>* src);
 
@@ -35,18 +40,23 @@ public:
 	void setHeightWidth(int, int);
 	void setHeader(Header*);
 
+	void clearLocalMemory();
+
 	vector<Figure*>* container;
 
 	int x, y;
 	Header* header;
 
-	enum objecttype{
-		none, rect, rectwiths, dot
+	enum objects {
+		none,redWall, cloud, coin, blackdot
 	};
 
-	objecttype currentObject;
+	objects currentObject;
+
+	Editor::types currentObjectType;
 
 	MouseFigure* tempObject;
+	Surface* imageSurf;
 
 	int lvlHeight;
 	int lvlWidth;

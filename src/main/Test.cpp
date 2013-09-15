@@ -2,169 +2,130 @@
 // Name        : SDLScrolling.cpp
 // Author      : Kevin Navero
 // Version     :
-// Copyright   : 
+// Copyright   :
 // Description : SDL Scrolling Test
 //============================================================================
 #include <iostream>
 #include "SDLAbstractionLayer.h"
 #include "Exception.h"
 #include "Figure.h"
+#include "RectBoundaryFigure.h"
+#include "CircBoundaryFigure.h"
+#include "TempFigure.h"
+#include "PlayerFigure.h"
 #include "MouseFigure.h"
+#include "GrabbableFigure.h"
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+#include <SDL/SDL_ttf.h>
+#include <SDL/SDL_mixer.h>
+
 #include "Editor/Editor.h"
-#include "SDL/SDL.h"
-#include "SDL/SDL_image.h"
 
 using namespace std;
+
+const int FRAMERATE = 30;
+
+const bool OTHER_LEADER = false;
+const double OTHER_SPEED = 0;
+const double OTHER_GRAVITY = 0;
+const double OTHER_JUMPSTRENGTH = 0;
+const int OTHER_NUMCLIPS = 1;
 
 const string TTF_PATH = "fonts/lazy.ttf";
 const int FONT_SIZE = 28;
 const Surface::Color FONT_COLOR = Surface::BLACK;
 
-const bool FOO = true; //change this from true or false to choose between a stick figure
-//or dot ("FOO = true" is the stick figure)
-
-const Figure::Gravity gravEnDis = Figure::GRAVITY_ENABLED;
-//const Figure::Gravity gravEnDis = Figure::GRAVITY_DISABLED;
-
-const bool TEST_GRAPHICS = true;
-const bool TEST_STRING_INPUT = false;
-
-/*Description: This tests the scrolling, collision detection, static figures within the level,
- *and animation. User can switch const bool FOO to true/false and comment/uncomment const
- *Figure::Gravity gravEnDis for Enabling and Disabling gravity
+/*
+ * Description: This client simply tests the API and its capabilities of creating a
+ * simple 2d scrolling platform game. This will serve as an example for now.
  */
 int main(int argc, char* argv[]) {
-	if (TEST_GRAPHICS) {
 
-		//Just for testing
-		//Load background and level defaults
-		Editor edit;
+	//editor test
+	Editor* editor = new Editor;
+	editor->setFile("resources/level.txt", Editor::read);
+	Header* info = NULL;
+	info = editor->readHeader();
 
-		edit.setFile("resources/default", Editor::read);
-		edit.readHeader();
+	//initialize screen, video mode, SDL, ttf, audio, etc.
+	SDL_Surface* screen = init(info->screen_w, info->screen_h, "SDL Scrolling");
 
-		Header windowProperties = *edit.headerInfo;
+	//initialize all images
+	Surface bgnd(info->bg_path.c_str());
+	Surface dot("images/dot.png", Surface::CYAN);
 
-		const int LEVEL_WIDTH = edit.headerInfo->bg_w;
-		const int LEVEL_HEIGHT = edit.headerInfo->bg_h;
-		const int SCREEN_WIDTH = edit.headerInfo->screen_w;
-		const int SCREEN_HEIGHT = edit.headerInfo->screen_h;
+	//collision vector - contains all the Figures (pointers to Figures) that
+	//must be taken into account in regards to collision detection
+	vector<Figure*>* collisions = NULL;
 
-		SDL_Surface* screen = init(SCREEN_WIDTH, SCREEN_HEIGHT, "SDL Scrolling");
+	printf("Starting mousefig...");
+	MouseFigure mouseFig(0, 0, &dot, SDL_GetVideoSurface(), info->bg_w,
+			info->bg_h, 1);
+	mouseFig.setHeader(info);
+	printf("done!\n");
 
-		Surface bgnd(edit.headerInfo->bg_path.c_str());
-		Surface dot("images/dot.png", Surface::CYAN);
-		Surface foo("images/Cyan_Final.png", Surface::BLACK);
-		Surface rect("images/rectangle.png");
-		Surface coin("images/coin.png", Surface::CYAN);
+	//Prepare music to be played within level
+	Music m("resources/tristam.mp3");
 
-		Surface red("images/red.bmp", Surface::CYAN);
-		Surface blue("images/blue.bmp", Surface::CYAN);
-		Surface green("images/green.bmp", Surface::CYAN);
-		Surface shimmer("images/shimmer.bmp", Surface::CYAN);
+	collisions = editor->decode();
+	mouseFig.setContainer(collisions);
 
-		RectFigure rf1(300, 525, rect, screen, Figure::GRAVITY_DISABLED, false, 0, 0, 0, 1, LEVEL_WIDTH, LEVEL_HEIGHT,
-				Figure::BOUNDARY, &red, &shimmer);
-		RectFigure rf2(500, 125, rect, screen, Figure::GRAVITY_ENABLED, false, 0, 0, 0, 1, LEVEL_WIDTH, LEVEL_HEIGHT);
-		CircFigure cf1(700, 525, dot, screen, Figure::GRAVITY_DISABLED, false, 0, 0, 0, 1, LEVEL_WIDTH, LEVEL_HEIGHT);
-		CircFigure cf2(900, 350, dot, screen, Figure::GRAVITY_ENABLED, false, 0, 0, 0, 1, LEVEL_WIDTH, LEVEL_HEIGHT,
-				Figure::BOUNDARY, &red, &green, &blue, &shimmer);
-		RectFigure coin1(600, 325, coin, screen, Figure::GRAVITY_DISABLED, false, 0, 0, 0, 1, LEVEL_WIDTH, LEVEL_HEIGHT,
-				Figure::POINT);
+	//Prepare bool quit variable, SDL_Event event, and Timer timer. All of these
+	//variables will be used in the event loop
+	bool quit = false;
+	SDL_Event event;
+	Timer timer;
+	timer.start();
 
-		MouseFigure mouseFig(1, 1, rect, screen, Figure::GRAVITY_DISABLED, true, 0, 0, 0, 1, LEVEL_WIDTH, LEVEL_HEIGHT,
-				Figure::BOUNDARY);
+	//Start music and set volume
+	if (Mix_PlayingMusic() == 0) if (Mix_PlayMusic(m.getMix_Music(), -1) < 0) throw SoundException();
 
-		bool quit = false;
-		SDL_Event event;
-		Timer timer;
+	Mix_VolumeMusic(32); //0 to 128
 
-		//container for level Figures
-		vector<Figure*>* collisions = NULL;
+	editor->closeFile();
 
-		//load level
-		Editor loadLevel("resources/level.txt",Editor::read);
+	//Start event loop
+	while (!quit) {
+		if (SDL_PollEvent(&event)) {
+			if (event.type == SDL_QUIT) quit = true;
 
-		//for reading level
-		collisions = loadLevel.decode();
+			//receive input for Player Figure
+			mouseFig.handleInput(event);
+		}
 
-		mouseFig.setHeightWidth(LEVEL_HEIGHT, LEVEL_WIDTH);
-		mouseFig.setContainer(collisions);
-		mouseFig.setHeader(edit.headerInfo);
+		//check for container mismatch (due to loading errors)
+		if(collisions != mouseFig.container){
+			//assume that mouse Fig's copy is right
+			collisions = mouseFig.container;
+		}
 
-		Music m(edit.headerInfo->bgm_path);
+		// Move player to new position
+		mouseFig.move(*collisions, timer.getTicks());
 
+		//restart timer since movement is time-based and independent of framerate
 		timer.start();
 
-		if (Mix_PlayingMusic() == 0) if (Mix_PlayMusic(m.getMix_Music(), -1) < 0) throw SoundException();
+		//blit background image to screen with respect to the camera following Player Figure
+		applySurface(0, 0, bgnd, screen, mouseFig.getCameraClip());
 
-		Mix_VolumeMusic(32); //0 to 128
-
-		while (!quit) {
-			if (SDL_PollEvent(&event)) {
-				if (event.type == SDL_QUIT) {
-					quit = true;
-					exit(0);
-				}
-
-				mouseFig.handleInput(event);
-			}
-
-			mouseFig.move(*collisions, timer.getTicks());
-			timer.start();
-
-			applySurface(0, 0, bgnd, screen, mouseFig.getCameraClip());
-
-			for (int i = 0; i < (int) (*collisions).size(); i++) {
-				(*collisions)[i]->show(mouseFig.getCameraClip());
-				if (mouseFig.tempObject != NULL) mouseFig.tempObject->show(mouseFig.getCameraClip());
-			}
-
-			flip(screen);
+		//draw all figures but temp Figs and player
+		for (unsigned int i = 0; i < collisions->size(); i++) {
+			collisions->at(i)->show(mouseFig.getCameraClip());
 		}
 
-		Mix_HaltMusic();
+		//draw the tempMouseFigure if there is one
+		if (mouseFig.tempObject != NULL) mouseFig.tempObject->show(
+				mouseFig.getCameraClip());
 
-		if (TEST_STRING_INPUT) {
-			quit = false;
-			bool nameEntered = false;
-
-			StringInput name(TTF_PATH, FONT_SIZE, FONT_COLOR, screen);
-			Surface msg(TTF_PATH, FONT_SIZE, FONT_COLOR, "New High Score! Enter Name: ");
-
-			fillScreen(screen, Surface::WHITE);
-			applySurface(getHorizontalMiddlePosition(msg, screen), 100, msg, screen);
-			flip(screen);
-
-			while (!quit) {
-				if (SDL_PollEvent(&event)) {
-					if (event.type == SDL_QUIT) {
-						quit = true;
-						break;
-					}
-
-					if (!nameEntered) {
-						name.handleInput(event);
-
-						if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN) {
-							nameEntered = true;
-							msg.setSDL_Surface(TTF_PATH, FONT_SIZE, FONT_COLOR, "Rank 1st: ");
-							quit = true;
-						}
-					}
-
-					fillScreen(screen, Surface::WHITE);
-					applySurface(getHorizontalMiddlePosition(msg, screen), 100, msg, screen);
-					name.showCentered();
-
-					flip(screen);
-
-					if (nameEntered) SDL_Delay(500);
-				}
-			}
-		}
+		//update the screen by swapping video buffers
+		flip(screen);
 	}
 
+//stop music
+	Mix_HaltMusic();
+
+//quit out of SDL, close audio, ttf, etc.
 	cleanUp();
 
 	return 0;

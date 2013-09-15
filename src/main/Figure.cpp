@@ -19,7 +19,6 @@ int Figure::determineGravity() {
 }
 
 int Figure::determineJump() {
-
    if (gravityEnabled && u && !jumpAction) {
       jumpAction = true;
       u = false;
@@ -56,12 +55,10 @@ void Figure::checkIfInAir(vector<Figure*>& other) {
 void Figure::initialize(int x, int y, double gravity, double speed,
       double jumpStrength, SDL_Surface* screen, Gravity gravityEnabled,
       bool leader, int numClips, int levelWidth, int levelHeight, Surface* p1,
-      Surface* p2, Surface* p3, Surface* p4, Resolves resolve) {
+      Surface* p2, Surface* p3, Surface* p4) {
    p.x = x;
    p.y = y;
    this->leader = leader;
-   resolution = resolve;
-   marker = ACTIVE;
 
    jumpFrame = 0;
    this->numClips = numClips;
@@ -188,10 +185,8 @@ void Figure::yMovement(vector<Figure*>& other, int deltaTicks) {
    //collision with boundaries or other Figures
    p.y += v.y * deltaTicks / 1000.0;
 
-   if (isCollided(other, count) && count != -1) {
-
+   if (isCollided(other, count) && count != -1)
       resolveCollision(other[count], deltaTicks, YHAT);
-   }
    else if (p.y > lh - dim.h)
       p.y = lh - dim.h;
 }
@@ -276,27 +271,27 @@ Figure::Figure() {
 Figure::Figure(int x, int y, Surface& image, SDL_Surface* screen,
       Gravity gravityEnabled, bool leader, double speed, double gravity,
       double jumpStrength, int numClips, int levelWidth, int levelHeight,
-      Resolves resolve, Surface* p1, Surface* p2, Surface* p3, Surface* p4) :
+      Surface* p1, Surface* p2, Surface* p3, Surface* p4) :
       image(&image) {
 
    dim.w = image.getSDL_Surface()->w / numClips;
    dim.h = image.getSDL_Surface()->h / 2;
 
    initialize(x, y, gravity, speed, jumpStrength, screen, gravityEnabled,
-         leader, numClips, levelWidth, levelHeight, p1, p2, p3, p4, resolve);
+         leader, numClips, levelWidth, levelHeight, p1, p2, p3, p4);
 }
 
 void Figure::setFigure(int x, int y, Surface& image, SDL_Surface* screen,
-      Gravity gravityEnabled, bool leader, double speed, double gravity,
-      double jumpStrength, int numClips, int levelWidth, int levelHeight,
-      Resolves resolve, Surface* p1, Surface* p2, Surface* p3, Surface* p4) {
+      Gravity gravityEnabled, int levelWidth, int levelHeight, bool leader,
+      double speed, double gravity, double jumpStrength, int numClips,
+      Surface* p1, Surface* p2, Surface* p3, Surface* p4) {
 
    dim.w = image.getSDL_Surface()->w / numClips;
    dim.h = image.getSDL_Surface()->h / 2;
    this->image = &image;
 
    initialize(x, y, gravity, speed, jumpStrength, screen, gravityEnabled,
-         leader, numClips, levelWidth, levelHeight, p1, p2, p3, p4, resolve);
+         leader, numClips, levelWidth, levelHeight, p1, p2, p3, p4);
 
    if (DEBUG_PRIVATES && this->className == "RectFigure")
       debug();
@@ -310,8 +305,16 @@ int Figure::getHeight() {
    return dim.h;
 }
 
+void Figure::setX(int x) {
+   p.x = x;
+}
+
 int Figure::getX() {
    return p.x;
+}
+
+void Figure::setY(int y) {
+   p.y = y;
 }
 
 int Figure::getY() {
@@ -342,9 +345,8 @@ bool Figure::isCollided(vector<Figure*>& other, int& count) {
    if (!other.empty()) {
       for (vector<Figure*>::iterator i = other.begin(), end = other.end();
             i != end; i++) {
-         if (checkCollision(*i)) {
+         if (*this != **i && checkCollision(*i))
             return true;
-         }
 
          count++;
       }
@@ -364,12 +366,11 @@ void Figure::handleInput(SDL_Event& event) {
             v.y -= dim.h * speed / 100 * jumpStrength;
 
          u = true;
-         if (inAir)
-            u = false;
-
          break;
       case SDLK_DOWN:
-         v.y += dim.h * speed / 100;
+         if (!gravityEnabled)
+            v.y += dim.h * speed / 100;
+
          d = true;
          break;
       case SDLK_LEFT:
@@ -390,10 +391,13 @@ void Figure::handleInput(SDL_Event& event) {
       case SDLK_UP:
          if (!gravityEnabled)
             v.y += dim.h * speed / 100 * jumpStrength;
-         u = false;
+
+         u = true;
          break;
       case SDLK_DOWN:
-         v.y -= dim.h * speed / 100;
+         if (!gravityEnabled)
+            v.y -= dim.h * speed / 100;
+
          d = false;
          break;
       case SDLK_LEFT:
@@ -427,66 +431,42 @@ void Figure::move(vector<Figure*>& other, int deltaTicks) {
    }
 }
 
-Figure::Marker Figure::show(SDL_Rect* otherCamera) {
-   if (marker == INACTIVE)
-      return marker;
-   else if (marker == REMOVE) {
-      bool animationDone = false;
-      marker = INACTIVE;
-
-      if (animationDone) {
-         //TODO: Add animation and sound for this
-         //do a special animation if needed for however many frames
+void Figure::show(SDL_Rect* otherCamera) {
+   if (numClips > 0) {
+      if (v.x < 0) {
+         status = LEFT;
+         animationFrame += AFVALUE;
       }
-
-      return marker;
-   }
-   else if (marker == ACTIVE) {
-      if (numClips > 0) {
-         if (v.x < 0) {
-            status = LEFT;
-            animationFrame += AFVALUE;
-         }
-         else if (v.x > 0) {
-            status = RIGHT;
-            animationFrame += AFVALUE;
-         }
-         else
-            animationFrame = 0;
-
-         if (animationFrame >= numClips)
-            animationFrame = 0;
-
-         if (leader) {
-            if (status == LEFT)
-               applySurface((int) p.x - camera->x, (int) p.y - camera->y,
-                     *image, screen, &cl[static_cast<int>(animationFrame)]);
-            else if (status == RIGHT)
-               applySurface((int) p.x - camera->x, (int) p.y - camera->y,
-                     *image, screen, &cr[static_cast<int>(animationFrame)]);
-
-            if (particleEffects)
-               showParticles(camera);
-         }
-         else {
-            if (status == LEFT)
-               applySurface((int) p.x - otherCamera->x,
-                     (int) p.y - otherCamera->y, *image, screen,
-                     &cl[static_cast<int>(animationFrame)]);
-            else if (status == RIGHT)
-               applySurface((int) p.x - otherCamera->x,
-                     (int) p.y - otherCamera->y, *image, screen,
-                     &cr[static_cast<int>(animationFrame)]);
-
-            if (particleEffects)
-               showParticles(otherCamera);
-         }
+      else if (v.x > 0) {
+         status = RIGHT;
+         animationFrame += AFVALUE;
       }
+      if (v.x == 0 || animationFrame >= numClips)
+         animationFrame = 0;
 
-      return marker;
+      if (leader) {
+         if (status == LEFT)
+            applySurface((int) p.x - camera->x, (int) p.y - camera->y, *image,
+                  screen, &cl[static_cast<int>(animationFrame)]);
+         else if (status == RIGHT)
+            applySurface((int) p.x - camera->x, (int) p.y - camera->y, *image,
+                  screen, &cr[static_cast<int>(animationFrame)]);
+
+         if (particleEffects)
+            showParticles(camera);
+      }
+      else {
+         if (status == LEFT)
+            applySurface((int) p.x - otherCamera->x, (int) p.y - otherCamera->y,
+                  *image, screen, &cl[static_cast<int>(animationFrame)]);
+         else if (status == RIGHT)
+            applySurface((int) p.x - otherCamera->x, (int) p.y - otherCamera->y,
+                  *image, screen, &cr[static_cast<int>(animationFrame)]);
+
+         if (particleEffects)
+            showParticles(otherCamera);
+      }
    }
-   else
-      throw InvalidMarkerException();
 }
 
 void Figure::showParticles(SDL_Rect* camera) {
@@ -504,67 +484,26 @@ SDL_Rect* Figure::getCameraClip() {
    return camera;
 }
 
-/*
- * Collision resolver -
- * Uses a int given in the figure, and int given in other
- * object that is involved with the collision
- * eg. player has resolve 1, and goal has resolve 2
- * so when the objects collide, collision 1,2 occurs
- * (and any special properties of that collision happen)
- * @param int  resolve constant of other involed figure
- * @param float time step given in mili seconds
- *
- * TODO: There has to be a better way to do this
- * Kevin - precondition here: Figure* other is valid and not NULL. Will keep thinking of a
- * better way to do the above. We'll see a pattern when this becomes bigger. Right now I'm
- * thinking of a multi-dimensional list-like data structure (vector, array) perhaps?
- */
 void Figure::resolveCollision(Figure* other, double timeStep, Component dir) {
-   switch (this->resolution) {
-   case (BOUNDARY): {
-      //we're a BOUNDARY - we don't do anything cause we're cool
-
-      break;
-   }
-   case (PLAYER): {
-      //we're the player - we have special interactions depending on the
-      //other resolve
-      switch (other->resolution) {
-      case (BOUNDARY): {
-         //Player runs into a boundary type object
-         //do what we expect it to do
-         if (dir == XHAT)
-            p.x -= v.x * timeStep / 1000.0;
-         if (dir == YHAT) {
-            p.y -= v.y * timeStep / 1000.0;
-            if (gravityEnabled)
-               v.y = 0;
-         }
-         break;
-      }
-      case (PLAYER): {
-         //Player runs into another player
-         //TODO: probably won't be doing anything until we have multiplayer
-         break;
-      }
-      case (POINT): {
-         //player runs into a point
-         // mark point for deletion
-         other->marker = REMOVE;
-         break;
-      }
-      }
-
-      break;
-   }
-   case (POINT): {
-      break;
-   }
+   if (dir == XHAT)
+      p.x -= v.x * timeStep / 1000.0;
+   else if (dir == YHAT) {
+      p.y -= v.y * timeStep / 1000.0;
+      if (gravityEnabled)
+         v.y = 0;
    }
 }
 
 string Figure::getClassName() {
    return className;
+}
+
+bool Figure::operator==(const Figure& other) {
+   return this->p.x == other.p.x && this->p.y == other.p.y;
+}
+
+bool Figure::operator!=(const Figure& other) {
+   return this->p.x != other.p.x || this->p.y != other.p.y;
 }
 
 Figure::~Figure() {
@@ -575,6 +514,9 @@ Figure::~Figure() {
       if (particles[i] != NULL)
          delete particles[i];
    }
+
+   delete[] cl;
+   delete[] cr;
 }
 
 RectFigure::RectFigure() {
@@ -588,12 +530,11 @@ RectFigure::RectFigure() {
 }
 
 RectFigure::RectFigure(int x, int y, Surface& image, SDL_Surface* screen,
-      Gravity gravityEnabled, bool leader, double speed, double gravity,
-      double jumpStrength, int numClips, int levelWidth, int levelHeight,
-      Resolves resolve, Surface* p1, Surface* p2, Surface* p3, Surface* p4) :
+      Gravity gravityEnabled, int levelWidth, int levelHeight, bool leader,
+      double speed, double gravity, double jumpStrength, int numClips,
+      Surface* p1, Surface* p2, Surface* p3, Surface* p4) :
       Figure(x, y, image, screen, gravityEnabled, leader, speed, gravity,
-            jumpStrength, numClips, levelWidth, levelHeight, resolve, p1, p2,
-            p3, p4) {
+            jumpStrength, numClips, levelWidth, levelHeight, p1, p2, p3, p4) {
    className = "RectFigure";
 
    if (DEBUG_PRIVATES)
@@ -719,12 +660,11 @@ CircFigure::CircFigure() {
 }
 
 CircFigure::CircFigure(int x, int y, Surface& image, SDL_Surface* screen,
-      Gravity gravityEnabled, bool leader, double speed, double gravity,
-      double jumpStrength, int numClips, int levelWidth, int levelHeight,
-      Resolves resolve, Surface* p1, Surface* p2, Surface* p3, Surface* p4) :
+      Gravity gravityEnabled, int levelWidth, int levelHeight, bool leader,
+      double speed, double gravity, double jumpStrength, int numClips,
+      Surface* p1, Surface* p2, Surface* p3, Surface* p4) :
       Figure(x, y, image, screen, gravityEnabled, leader, speed, gravity,
-            jumpStrength, numClips, levelWidth, levelHeight, resolve, p1, p2,
-            p3, p4) {
+            jumpStrength, numClips, levelWidth, levelHeight, p1, p2, p3, p4) {
    className = "CircFigure";
 
    if (dim.w > dim.h)
@@ -737,12 +677,12 @@ CircFigure::CircFigure(int x, int y, Surface& image, SDL_Surface* screen,
 }
 
 void CircFigure::setFigure(int x, int y, Surface& image, SDL_Surface* screen,
-      Gravity gravityEnabled, bool leader, double speed, double gravity,
-      double jumpStrength, int numClips, int levelWidth, int levelHeight,
-      Resolves resolve, Surface* p1, Surface* p2, Surface* p3, Surface* p4) {
-   Figure::setFigure(x, y, image, screen, gravityEnabled, leader, speed,
-         gravity, jumpStrength, numClips, levelWidth, levelHeight, resolve, p1,
-         p2, p3, p4);
+      Gravity gravityEnabled, int levelWidth, int levelHeight, bool leader,
+      double speed, double gravity, double jumpStrength, int numClips,
+      Surface* p1, Surface* p2, Surface* p3, Surface* p4) {
+   Figure::setFigure(x, y, image, screen, gravityEnabled, levelWidth,
+         levelHeight, leader, speed, gravity, jumpStrength, numClips, p1, p2,
+         p3, p4);
 
    if (dim.w > dim.h)
       r = dim.w / 2;
@@ -757,7 +697,7 @@ int CircFigure::getR() {
    return r;
 }
 
-Figure::Marker CircFigure::show(SDL_Rect* otherCamera) {
+void CircFigure::show(SDL_Rect* otherCamera) {
    if (numClips > 0) {
       if (v.x < 0) {
          status = LEFT;
@@ -798,8 +738,6 @@ Figure::Marker CircFigure::show(SDL_Rect* otherCamera) {
             showParticles(otherCamera);
       }
    }
-
-   return marker;
 }
 
 void CircFigure::showParticles(SDL_Rect* camera) {
@@ -854,14 +792,22 @@ bool CircFigure::checkCollision(CircFigure* c) {
    return false;
 }
 
+int Figure::getGravEnable() {
+	return gravityEnabled;
+}
+
 string Figure::getFilePath() {
 	return image->getFilePath();
 }
 
-int Figure::getColorKey() {
+int Figure::getColorKey(){
 	return image->getColorKey();
 }
 
-int Figure::getResolution() {
-	return resolution;
+int Figure::getNumClips() {
+	return numClips;
+}
+
+void Figure::setGravEnable(Figure::Gravity grav) {
+	gravityEnabled = grav;
 }

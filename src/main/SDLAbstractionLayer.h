@@ -69,7 +69,22 @@ private:
     */
    SDL_Surface* s;
 
+   /*
+    * Copy of data used during creation! For editor
+    */
+   int colorKey;
+   string filePath;
+
 public:
+
+   /*
+    * Access for data used during creation
+    */
+
+   string getFilePath();
+
+   int getColorKey();
+
 
    /*
     * Description: enumerated Color tags. Used for specifying any Color arguments
@@ -160,24 +175,6 @@ public:
     * Description: Destructor for Surface objects
     */
    ~Surface();
-
-   /*
-    * Used for editor - gets file path used for image surface
-    * creation.
-    */
-   string getFilePath();
-
-   /*
-    * Used for editor - gets the color key used during creation
-    */
-   int getColorKey();
-
-private:
-   /*
-    * Made things much easlier by remembering the file path used
-    */
-   string filePath;
-   int colorKey;
 };
 
 /*
@@ -666,6 +663,21 @@ void fillScreen(SDL_Surface* screen, Surface::Color color);
  * Parameter: int high is the maximum value of the range
  */
 int randRange(int low, int high);
+
+/*
+ * Description: returns the slope based on two points given (A and B)
+ * Parameter: Point A is the first point
+ * Parameter: Point B is the second point
+ */
+double slope(Point A, Point B);
+
+/*
+ * Description: returns a point on the line associated to int x passed in as an arg
+ * Parameter: double m is the slope of the line
+ * Parameter: Point p is any point on the line
+ * Parameter: int x is the x point associated with the y output that we are interested in
+ */
+Point pointOnLine(double m, Point p, double x);
 
 /*
  * Description: init initializes all SDL subsystems, sets the video mode, and sets the caption

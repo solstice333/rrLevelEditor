@@ -7,29 +7,32 @@
 
 #include "MouseFigure.h"
 
-MouseFigure::MouseFigure(int x, int y, Surface& image, SDL_Surface* screen, Gravity gravityEnabled, bool leader,
-		double speed, double gravity, double jumpStrength, int numClips, int levelWidth, int levelHeight,
-		Resolves resolve, Surface* p1, Surface* p2, Surface* p3, Surface* p4) :
-		Figure(x, y, image, screen, gravityEnabled, leader, speed, gravity, jumpStrength, numClips, levelWidth,
-				levelHeight, resolve, p1, p2, p3, p4) {
-
-	this->className = "MouseFigure";
+MouseFigure::MouseFigure(int x, int y, Surface* image, SDL_Surface* screen,
+		int levelWidth, int levelHeight, int numClips)
+		: Figure(x, y, *image, screen, Figure::GRAVITY_DISABLED, true, 0, 0, 0,
+				1, lvlWidth, lvlHeight) {
+	this->y = y;
+	this->x = x;
+	header = NULL;
 	container = NULL;
 	SDL_GetMouseState(&x, &y);
 	currentObject = none;
+	currentObjectType = Editor::rectBoundaryFigure;
+	imageSurf = NULL;
 	tempObject = NULL;
+	this->lvlHeight = lvlHeight;
+	this->lvlWidth = lvlWidth;
 }
 
 MouseFigure::~MouseFigure() {
-	if (image != NULL) delete image;
-	if (p1 != NULL) delete p1;
-	if (p2 != NULL) delete p2;
-	if (p3 != NULL) delete p3;
-	if (p4 != NULL) delete p4;
+
 }
 
 bool MouseFigure::checkCollision(CircFigure* other) {
-	return false;
+	if (distance(other->getX(), other->getY()) < other->getR()) {
+		return true;
+	}
+	else return false;
 }
 
 bool MouseFigure::checkCollision(RectFigure* other) {
@@ -44,7 +47,7 @@ void MouseFigure::handleInput(SDL_Event& event) {
 		p.y = event.motion.y;
 
 		if (tempObject != NULL) {
-			tempObject->setPosition(event.motion.x + camera->x, event.motion.y + camera->y);
+			tempObject->setPosition(event.motion.x, event.motion.y);
 		}
 	}
 	else if (event.type == SDL_MOUSEBUTTONDOWN) {
@@ -57,33 +60,80 @@ void MouseFigure::handleInput(SDL_Event& event) {
 				x += camera->x;
 				y += camera->y;
 
-				//check which is selected
+				SDL_Surface* screen = SDL_GetVideoSurface();
+
+				//load the image for the surface based on currentobject
+				Surface* image = NULL;
 				switch (currentObject) {
-					case rect: {
-						//load image
-						Surface* rect = new Surface("images/rectangle.png");
-
-						//and place the object there
-						Figure* newFig = new RectFigure(x, y, *rect, screen, Figure::GRAVITY_DISABLED, false, 0, 0, 0,
-								1, lvlWidth, lvlHeight, Figure::BOUNDARY);
-
-						//and place it into the map
-						container->push_back(newFig);
+					case redWall: {
+						image = new Surface("images/rectangle.png");
+						break;
+					}
+					case blackdot: {
+						image = new Surface("images/dot.png", Surface::CYAN);
+						break;
+					}
+					case cloud: {
+						image = new Surface("images/grab.png", Surface::CYAN);
+						break;
+					}
+					case coin: {
+						image = new Surface("images/coin.png", Surface::CYAN);
 						break;
 					}
 					case none: {
-						//figure out which object the mouse is in
+						//No object selected - delete if there's an object under
 						int index = 0;
-						if (isCollided((*container), index)) {
-							//means we actually are in something
-							//remove from container
-							//TODO: Should I Make invis? Or delete? I don't know
-							delete (*container).at(index);	//calls de-constructor
-							(*container).erase((*container).begin() + index); //remove it
+						printf("No object selected - attempting delete!\n");
+						if (isCollided(*container, index)) {
+							printf("Found an object!\n");
+							//found an object under mouse - free it's memeory
+							delete container->at(index);
+							container->erase(container->begin() + index);
 						}
+						return;
 						break;
 					}
 				}
+
+				//Load the figure assoicated with the current Object
+				Figure* finalObject = NULL;
+				switch (currentObjectType) {
+					case Editor::rectBoundaryFigure: {
+						finalObject = new RectBoundaryFigure(x, y, *image,
+								screen, lvlWidth, lvlHeight, 1);
+						break;
+					}
+					case Editor::grabbableFigure: {
+						finalObject = new GrabbableFigure(x, y, *image, screen,
+								lvlWidth, lvlHeight, 1);
+						break;
+					}
+					case Editor::circBoundryFigure: {
+						finalObject = new CircBoundaryFigure(x, y, *image,
+								screen, lvlWidth, lvlHeight, 1);
+						break;
+					}
+
+					case Editor::tempFigure: {
+						finalObject = new TempFigure(x, y, *image, screen,
+								lvlWidth, lvlHeight);
+						break;
+					}
+
+					case Editor::cursorFigure: {
+						finalObject = new CursorFigure(x, y, *image, screen,
+						NULL);
+						break;
+					}
+				}
+
+				//turn of grav for the figure
+				finalObject->setGravEnable(Figure::GRAVITY_DISABLED);
+
+				//place the final figure into the container
+				container->push_back(finalObject);
+
 				break;
 			}
 		}
@@ -92,33 +142,86 @@ void MouseFigure::handleInput(SDL_Event& event) {
 		switch (event.key.keysym.sym) {
 			case SDLK_1: {
 
-				if (currentObject != rect) {
+				if (currentObject != redWall) {
+
+					//free up memory used by previous selection
+					clearLocalMemory();
 
 					//get location of mouse currently
 					SDL_GetMouseState(&x, &y);
 
-					//add offsets to it based on camera clip
-					x += camera->x;
-					y += camera->y;
-
 					//load image
-					Surface* rectsurf = new Surface("images/rectangle.png");
+					imageSurf = new Surface("images/rectangle.png",
+							Surface::CYAN);
 
 					//and place the object there
-					tempObject = new MouseFigure(x, y, *rectsurf, screen, Figure::GRAVITY_DISABLED, false, 0, 0, 0, 1,
-							lvlWidth, lvlHeight, Figure::BOUNDARY);
+					tempObject = new MouseFigure(x, y, imageSurf, screen,
+							lvlWidth, lvlHeight, 1);
 
-					currentObject = rect;
+					currentObject = redWall;
+					currentObjectType = Editor::rectBoundaryFigure;
 				}
 				break;
 			}
 			case SDLK_2:
+				//coin Placement
+				if (currentObject != coin) {
+					//free up memory used by previous selection
+					clearLocalMemory();
+
+					//get location of mouse currently
+					SDL_GetMouseState(&x, &y);
+
+					//load image
+					imageSurf = new Surface("images/coin.png", Surface::CYAN);
+
+					//and place the object there
+					tempObject = new MouseFigure(x, y, imageSurf, screen,
+							lvlWidth, lvlHeight, 1);
+
+					currentObject = coin;
+					currentObjectType = Editor::tempFigure;
+				}
 				break;
 
 			case SDLK_3:
+				if (currentObject != cloud) {
+					//free up memory used by previous selection
+					clearLocalMemory();
+
+					//get location of mouse currently
+					SDL_GetMouseState(&x, &y);
+
+					//load image
+					imageSurf = new Surface("images/grab.png", Surface::CYAN);
+
+					//and place the object there
+					tempObject = new MouseFigure(x, y, imageSurf, screen,
+							lvlWidth, lvlHeight, 1);
+
+					currentObject = cloud;
+					currentObjectType = Editor::grabbableFigure;
+				}
 				break;
 
 			case SDLK_4:
+				if (currentObject != blackdot) {
+					//free up memory used by previous selection
+					clearLocalMemory();
+
+					//get location of mouse currently
+					SDL_GetMouseState(&x, &y);
+
+					//load image
+					imageSurf = new Surface("images/dot.png", Surface::CYAN);
+
+					//and place the object there
+					tempObject = new MouseFigure(x, y, imageSurf, screen,
+							lvlWidth, lvlHeight, 1);
+
+					currentObject = blackdot;
+					currentObjectType = Editor::circBoundryFigure;
+				}
 				break;
 
 			case SDLK_ESCAPE:
@@ -135,23 +238,23 @@ void MouseFigure::handleInput(SDL_Event& event) {
 				//TODO: probably should allow user to customize this
 
 				Editor saveLevel("resources/level.txt", Editor::write);
-
-				saveLevel.encode(container,*header);
+				saveLevel.writeHeader(*header);
+				saveLevel.encode(container, *header);
 
 				break;
 			}
 
-			case SDLK_l:{
+			case SDLK_l: {
 				//force load map from level.txt
 				//TODO: Bug - it locks all figures, preventing modification
 				//		Should ideally just reload the map
 
-				Editor loadLevel("level.txt", Editor::read);
-
-				//TODO: actually cleaning up memory here would be nice
-				//		might be what's causing the bug
+				Editor loadLevel("resources/level.txt", Editor::read);
+				loadLevel.readHeader();
+				container->clear();
+				container = NULL;
 				container = loadLevel.decode();
-
+				loadLevel.closeFile();
 				break;
 			}
 			default:
@@ -176,4 +279,26 @@ void MouseFigure::setHeightWidth(int h, int w) {
 
 void MouseFigure::setHeader(Header* input) {
 	header = input;
+}
+
+float MouseFigure::distance(int x, int y) {
+	float xresult = this->x - x;
+	xresult *= xresult;
+
+	float yresult = this->y - y;
+	yresult *= yresult;
+
+	float result = sqrt(xresult + yresult);
+
+	return result;
+}
+
+void MouseFigure::clearLocalMemory() {
+	//free memory used by previous surface
+	delete imageSurf;
+	imageSurf = NULL;
+
+	//free memory used by tempObject Earlier
+	delete tempObject;
+	tempObject = NULL;
 }
