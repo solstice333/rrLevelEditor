@@ -10,7 +10,7 @@
 MouseFigure::MouseFigure(int x, int y, Surface* image, SDL_Surface* screen,
 		int levelWidth, int levelHeight, int numClips)
 		: Figure(x, y, *image, screen, Figure::GRAVITY_DISABLED, true, 0, 0, 0,
-				1, lvlWidth, lvlHeight) {
+				1, levelWidth, levelHeight) {
 	this->y = y;
 	this->x = x;
 	header = NULL;
