@@ -8,15 +8,21 @@
 #ifndef MOUSEFIGURE_H_
 #define MOUSEFIGURE_H_
 
-#include "Figure.h"
+#include <SDL/SDL_events.h>
+#include <vector>
+
 #include "Editor/Editor.h"
-#include "GrabbableFigure.h"
-#include "PlayerFigure.h"
-#include "TempFigure.h"
-#include "RectBoundaryFigure.h"
-#include "CursorFigure.h"
-#include "CircBoundaryFigure.h"
-#include <cmath>
+#include "Figure.h"
+
+//#include "GrabbableFigure.h"
+//#include "PlayerFigure.h"
+//#include "RectBoundaryFigure.h"
+//#include "TempFigure.h"
+
+class CircFigure;
+class RectFigure;
+class Surface;
+struct SDL_Surface;
 
 class MouseFigure: public Figure {
 	public:
@@ -41,6 +47,7 @@ class MouseFigure: public Figure {
 	void setHeader(Header*);
 
 	void clearLocalMemory();
+	void clearContainer();
 
 	vector<Figure*>* container;
 

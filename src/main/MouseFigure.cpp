@@ -246,12 +246,10 @@ void MouseFigure::handleInput(SDL_Event& event) {
 
 			case SDLK_l: {
 				//force load map from level.txt
-				//TODO: Bug - it locks all figures, preventing modification
-				//		Should ideally just reload the map
 
 				Editor loadLevel("resources/level.txt", Editor::read);
 				loadLevel.readHeader();
-				container->clear();
+				clearContainer();
 				container = NULL;
 				container = loadLevel.decode();
 				loadLevel.closeFile();
@@ -301,4 +299,11 @@ void MouseFigure::clearLocalMemory() {
 	//free memory used by tempObject Earlier
 	delete tempObject;
 	tempObject = NULL;
+}
+
+void MouseFigure::clearContainer() {
+	for (unsigned int i = 0; i < container->size(); i++) {
+		delete container->at(i);
+	}
+	container->clear();
 }
