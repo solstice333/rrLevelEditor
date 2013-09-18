@@ -1,135 +1,81 @@
 1191 670 900 550
 images/bgnd.jpg
 resources/tristam.mp3
-329 160 1191 670 0 4 4 1
-images/dot.png
-398 160 1191 670 0 4 4 1
-images/dot.png
-410 171 1191 670 0 4 4 1
-images/dot.png
-427 197 1191 670 0 4 4 1
-images/dot.png
-407 245 1191 670 0 4 4 1
-images/dot.png
-327 245 1191 670 0 4 4 1
-images/dot.png
-528 150 1191 670 0 4 4 1
-images/dot.png
-514 222 1191 670 0 4 4 1
-images/dot.png
-466 277 1191 670 0 4 4 1
-images/dot.png
-428 365 1191 670 0 4 4 1
-images/dot.png
-198 259 1191 670 0 4 1 1
-images/coin.png
-139 161 1191 670 0 4 1 1
-images/coin.png
-96 257 1191 670 0 4 1 1
-images/coin.png
-108 327 1191 670 0 4 1 1
-images/coin.png
-102 512 1191 670 0 4 1 1
-images/coin.png
-110 519 1191 670 0 4 1 1
-images/coin.png
-656 339 1191 670 0 0 0 1
+238 640 1191 670 0 0 0 1
 images/rectangle.png
-676 323 1191 670 0 0 0 1
+267 623 1191 670 0 0 0 1
 images/rectangle.png
-403 514 1191 670 0 4 3 1
-images/grab.png
-284 363 1191 670 0 4 3 1
-images/grab.png
-270 365 1191 670 0 4 3 1
-images/grab.png
-480 285 1191 670 0 4 3 1
-images/grab.png
-608 118 1191 670 0 4 3 1
-images/grab.png
-636 110 1191 670 0 4 3 1
-images/grab.png
-724 105 1191 670 0 4 3 1
-images/grab.png
-812 243 1191 670 0 0 0 1
+298 603 1191 670 0 0 0 1
 images/rectangle.png
-827 245 1191 670 0 0 0 1
+326 583 1191 670 0 0 0 1
 images/rectangle.png
-877 235 1191 670 0 0 0 1
+356 568 1191 670 0 0 0 1
 images/rectangle.png
-892 223 1191 670 0 0 0 1
+383 556 1191 670 0 0 0 1
 images/rectangle.png
-942 111 1191 670 0 4 1 1
-images/coin.png
-970 114 1191 670 0 4 1 1
-images/coin.png
-1042 202 1191 670 0 4 1 1
-images/coin.png
-1044 245 1191 670 0 4 1 1
-images/coin.png
-970 473 1191 670 0 4 3 1
+410 544 1191 670 0 0 0 1
+images/rectangle.png
+434 530 1191 670 0 0 0 1
+images/rectangle.png
+460 515 1191 670 0 0 0 1
+images/rectangle.png
+484 501 1191 670 0 0 0 1
+images/rectangle.png
+512 483 1191 670 0 0 0 1
+images/rectangle.png
+536 469 1191 670 0 0 0 1
+images/rectangle.png
+566 451 1191 670 0 0 0 1
+images/rectangle.png
+592 437 1191 670 0 0 0 1
+images/rectangle.png
+616 423 1191 670 0 0 0 1
+images/rectangle.png
+644 407 1191 670 0 0 0 1
+images/rectangle.png
+914 37 1191 670 0 4 3 1
 images/grab.png
-934 510 1191 670 0 4 3 1
+906 207 1191 670 0 0 0 1
+images/rectangle.png
+944 207 1191 670 0 0 0 1
+images/rectangle.png
+984 208 1191 670 0 0 0 1
+images/rectangle.png
+1018 207 1191 670 0 0 0 1
+images/rectangle.png
+1046 206 1191 670 0 0 0 1
+images/rectangle.png
+1078 206 1191 670 0 0 0 1
+images/rectangle.png
+884 208 1191 670 0 0 0 1
+images/rectangle.png
+152 61 1191 670 0 4 3 1
 images/grab.png
-740 543 1191 670 0 4 3 1
-images/grab.png
-782 354 1191 670 0 4 4 1
-images/dot.png
-778 319 1191 670 0 4 4 1
-images/dot.png
-682 258 1191 670 0 4 4 1
-images/dot.png
-593 245 1191 670 0 4 4 1
-images/dot.png
-574 255 1191 670 0 4 4 1
-images/dot.png
-594 121 1191 670 0 4 4 1
-images/dot.png
-630 70 1191 670 0 4 4 1
-images/dot.png
-530 63 1191 670 0 4 4 1
-images/dot.png
-390 77 1191 670 0 4 4 1
-images/dot.png
-327 74 1191 670 0 4 4 1
-images/dot.png
-304 63 1191 670 0 4 4 1
-images/dot.png
-258 85 1191 670 0 4 4 1
-images/dot.png
-235 101 1191 670 0 4 4 1
-images/dot.png
-187 98 1191 670 0 4 4 1
-images/dot.png
-167 91 1191 670 0 4 4 1
-images/dot.png
-45 144 1191 670 0 4 4 1
-images/dot.png
-53 176 1191 670 0 4 4 1
-images/dot.png
-55 262 1191 670 0 4 4 1
-images/dot.png
-47 307 1191 670 0 4 4 1
-images/dot.png
-47 366 1191 670 0 4 4 1
-images/dot.png
-120 373 1191 670 0 4 1 1
+812 169 1191 670 0 4 1 1
 images/coin.png
-141 387 1191 670 0 4 1 1
+770 205 1191 670 0 4 1 1
 images/coin.png
-189 373 1191 670 0 4 1 1
+722 239 1191 670 0 4 1 1
 images/coin.png
-197 406 1191 670 0 4 1 1
+688 287 1191 670 0 4 1 1
 images/coin.png
-335 268 1191 670 0 4 1 1
+648 313 1191 670 0 4 1 1
 images/coin.png
-368 284 1191 670 0 4 1 1
+610 351 1191 670 0 4 1 1
 images/coin.png
-401 321 1191 670 0 4 1 1
+518 383 1191 670 0 4 1 1
 images/coin.png
-451 399 1191 670 0 4 1 1
+600 363 1191 670 0 4 1 1
 images/coin.png
-508 424 1191 670 0 4 1 1
+564 391 1191 670 0 4 1 1
 images/coin.png
-532 440 1191 670 0 4 1 1
+482 431 1191 670 0 4 1 1
+images/coin.png
+472 449 1191 670 0 4 1 1
+images/coin.png
+398 493 1191 670 0 4 1 1
+images/coin.png
+389 501 1191 670 0 4 1 1
+images/coin.png
+349 512 1191 670 0 4 1 1
 images/coin.png
