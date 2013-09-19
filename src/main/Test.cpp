@@ -40,6 +40,10 @@ const Surface::Color FONT_COLOR = Surface::BLACK;
 const bool EDIT = true;
 const bool PLAY = true;
 
+
+//TODO: there is a bug in where a single (or multiple) GrabbableFigure(s) exists and
+//PlayerFigure is incapable of jumping for some reason
+
 /*
  * Description: This client simply tests the API and its capabilities of creating a
  * simple 2d scrolling platform game. This will serve as an example for now.
@@ -147,6 +151,7 @@ int main(int argc, char* argv[]) {
       editor->setFile("resources/level.txt", Editor::read);
       info = editor->readHeader();
       vector<Figure*>* collisions = editor->decode();
+      collisions->push_back(&rf);
 
       while (!quit) {
          if (SDL_PollEvent(&event)) {
