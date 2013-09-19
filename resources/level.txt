@@ -1,81 +1,21 @@
 1191 670 900 550
 images/bgnd.jpg
 resources/tristam.mp3
-238 640 1191 670 0 0 0 1
+796 387 1191 670 0 0 0 1
 images/rectangle.png
-267 623 1191 670 0 0 0 1
-images/rectangle.png
-298 603 1191 670 0 0 0 1
-images/rectangle.png
-326 583 1191 670 0 0 0 1
-images/rectangle.png
-356 568 1191 670 0 0 0 1
-images/rectangle.png
-383 556 1191 670 0 0 0 1
-images/rectangle.png
-410 544 1191 670 0 0 0 1
-images/rectangle.png
-434 530 1191 670 0 0 0 1
-images/rectangle.png
-460 515 1191 670 0 0 0 1
-images/rectangle.png
-484 501 1191 670 0 0 0 1
-images/rectangle.png
-512 483 1191 670 0 0 0 1
-images/rectangle.png
-536 469 1191 670 0 0 0 1
-images/rectangle.png
-566 451 1191 670 0 0 0 1
-images/rectangle.png
-592 437 1191 670 0 0 0 1
-images/rectangle.png
-616 423 1191 670 0 0 0 1
-images/rectangle.png
-644 407 1191 670 0 0 0 1
-images/rectangle.png
-914 37 1191 670 0 4 3 1
+710 16 1191 670 0 4 3 1
 images/grab.png
-906 207 1191 670 0 0 0 1
+401 522 1191 670 0 4 1 1
+images/coin.png
+546 536 1191 670 0 4 1 1
+images/coin.png
+658 514 1191 670 0 4 1 1
+images/coin.png
+262 293 1191 670 0 4 1 1
+images/coin.png
+203 135 1191 670 0 0 0 1
 images/rectangle.png
-944 207 1191 670 0 0 0 1
+105 131 1191 670 0 0 0 1
 images/rectangle.png
-984 208 1191 670 0 0 0 1
+982 229 1191 670 0 0 0 1
 images/rectangle.png
-1018 207 1191 670 0 0 0 1
-images/rectangle.png
-1046 206 1191 670 0 0 0 1
-images/rectangle.png
-1078 206 1191 670 0 0 0 1
-images/rectangle.png
-884 208 1191 670 0 0 0 1
-images/rectangle.png
-152 61 1191 670 0 4 3 1
-images/grab.png
-812 169 1191 670 0 4 1 1
-images/coin.png
-770 205 1191 670 0 4 1 1
-images/coin.png
-722 239 1191 670 0 4 1 1
-images/coin.png
-688 287 1191 670 0 4 1 1
-images/coin.png
-648 313 1191 670 0 4 1 1
-images/coin.png
-610 351 1191 670 0 4 1 1
-images/coin.png
-518 383 1191 670 0 4 1 1
-images/coin.png
-600 363 1191 670 0 4 1 1
-images/coin.png
-564 391 1191 670 0 4 1 1
-images/coin.png
-482 431 1191 670 0 4 1 1
-images/coin.png
-472 449 1191 670 0 4 1 1
-images/coin.png
-398 493 1191 670 0 4 1 1
-images/coin.png
-389 501 1191 670 0 4 1 1
-images/coin.png
-349 512 1191 670 0 4 1 1
-images/coin.png

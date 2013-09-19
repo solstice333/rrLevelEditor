@@ -231,9 +231,7 @@ void PlayerFigure::move(vector<Figure*>& other, int deltaTicks) {
 
 void PlayerFigure::resolveCollision(Figure* other, double timeStep,
       Component dir) {
-   if (typeid(*other) == typeid(TempFigure))
-      inAir = true;
-   else if (typeid(*other) == typeid(RectBoundaryFigure)
+   if (typeid(*other) == typeid(RectBoundaryFigure)
          || typeid(*other) == typeid(CircBoundaryFigure)) {
       if (dir == XHAT)
          p.x -= (v.x * timeStep / 1000.0) + grabVel.x;
