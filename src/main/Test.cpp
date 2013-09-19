@@ -116,7 +116,7 @@ int main(int argc, char* argv[]) {
 
          //draw all figures but temp Figs and player
          for (unsigned int i = 0; i < collisions->size(); i++) {
-            collisions->at(i)->show(mouseFig.getCameraClip());
+            (*collisions)[i]->show(mouseFig.getCameraClip());
          }
 
          //draw the tempMouseFigure if there is one
