@@ -11,7 +11,6 @@
  * TODO: Load setting for numbers 1 -> 9 objects
  * in a text file that will be loaded when editor is opened
  */
-
 Editor::Editor() {
    headerInfo = NULL;
    file = NULL;

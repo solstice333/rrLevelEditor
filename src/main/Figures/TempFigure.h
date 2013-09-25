@@ -8,10 +8,8 @@
 #ifndef TEMPFIGURE_H_
 #define TEMPFIGURE_H_
 
-#include "SDLAbstractionLayer.h"
 #include "PlayerFigure.h"
 #include "Figure.h"
-#include "Exception.h"
 
 /*
  * Description: TempFigure is a convenience class for Figures that are meant to disappear

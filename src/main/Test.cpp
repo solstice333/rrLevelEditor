@@ -5,21 +5,11 @@
 // Copyright   :
 // Description : SDL Scrolling Test
 //============================================================================
+
 #include <iostream>
 #include <vector>
 #include "SDLAbstractionLayer.h"
-#include "Exception.h"
-#include "Figure.h"
-#include "RectBoundaryFigure.h"
-#include "CircBoundaryFigure.h"
-#include "TempFigure.h"
-#include "PlayerFigure.h"
-#include "MouseFigure.h"
-#include "GrabbableFigure.h"
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_ttf.h>
-#include <SDL/SDL_mixer.h>
+#include "Objects.h"
 
 #include "Editor/Editor.h"
 
@@ -41,8 +31,7 @@ const bool EDIT = true;
 const bool PLAY = true;
 
 
-//TODO: there is a bug in where a single (or multiple) GrabbableFigure(s) exists and
-//PlayerFigure is incapable of jumping for some reason
+//TODO clean up collisions vector
 
 /*
  * Description: This client simply tests the API and its capabilities of creating a

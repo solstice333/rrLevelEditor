@@ -8,7 +8,6 @@
 #ifndef PLAYERFIGURE_H_
 #define PLAYERFIGURE_H_
 
-#include "SDLAbstractionLayer.h"
 #include "Figure.h"
 #include "RectBoundaryFigure.h"
 #include "CircBoundaryFigure.h"
