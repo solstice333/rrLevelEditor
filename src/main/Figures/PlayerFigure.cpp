@@ -70,8 +70,6 @@ void PlayerFigure::checkIfInAir(vector<Figure*>& other) {
                || (typeid(*other[count]) == typeid(GrabbableFigure)
                      && p.y < lh - dim.h)))
       inAir = true;
-
-   cout << "inAir: " << inAir << endl;
 }
 
 void PlayerFigure::xMovement(vector<Figure*>& other, int deltaTicks) {
@@ -107,8 +105,6 @@ void PlayerFigure::yMovement(vector<Figure*>& other, int deltaTicks) {
 
    //collision with boundaries or other Figures
    p.y += (v.y * deltaTicks / 1000.0) + grabVel.y;
-
-   cout << "v.y: " << v.y << endl;
 
    if (isCollided(other, count) && count != -1)
       resolveCollision(other[count], deltaTicks, YHAT);

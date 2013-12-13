@@ -254,4 +254,5 @@ Editor::types Editor::translateTypeID(Figure* obj) {
 
 void Editor::closeFile() {
    fclose(file);
+   file = NULL;
 }

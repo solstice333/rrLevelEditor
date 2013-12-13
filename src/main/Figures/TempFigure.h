@@ -34,7 +34,9 @@ private:
     */
    Marker marker;
 
-   //TODO description here
+   /*
+    * Description: the Chunk to be played when TempFigure disappears
+    */
    Chunk scratch;
 
 public:

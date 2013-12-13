@@ -10,6 +10,8 @@
  *      Author: Alles Rebel
  */
 
+// TODO document this so that other devs can use it easily
+
 #ifndef EDITOR_H_
 #define EDITOR_H_
 
