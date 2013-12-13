@@ -4,6 +4,7 @@
 SDL 1.2, SDL_image 1.2, SDL_mixer 1.2, SDL_ttf 2.0
 
 For those who have Advanced Packaging Tool available, you can enter the following command in the terminal:
+    
     apt-get install libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev
 
 ##Suggested Developer Tools##
@@ -28,7 +29,7 @@ http://lazyfoo.net/SDL_tutorials/lesson03/linux/eclipse/index.php
 ***_To Add Figures_***
 1. Select what piece you wish to place with numbers 1-9
 	-This will remove you from delete mode if a valid piece is selected
-    
+
 2. Click to add piece to scene
 	-A figure will be following your mouse, once you click it should not move
 
