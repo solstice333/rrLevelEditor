@@ -25,7 +25,7 @@ Eclipse Kepler 4.3 for C/C++ Developers - http://www.eclipse.org/downloads/packa
 
 4. Right click on the project inside Project Explorer and click "Build Project". Next hit Ctrl + F11 to run. Instructions for how to use the level editor are below.
 
-##So this is a VERY basic level editor!
+##So this is a VERY basic level editor!##
 ***_To Add Figures_***
 
 1. Select what piece you wish to place with numbers 1-9
