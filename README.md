@@ -15,11 +15,11 @@ Eclipse Kepler 4.3 for C/C++ Developers - http://www.eclipse.org/downloads/packa
 
 2. Right click on the project and click on Properties. Under C/C++ Build, click on Settings. Go to the Tool Settings tab and underneath GCC C++ Linker, click on Libraries. In the Libraries(-l) section add "SDL", "SDL_image", "SDL_mixer", and "SDL_ttf" all separately.
 
-See the following links for more information and images:
+   See the following links for more information and images:
 
-http://lazyfoo.net/SDL_tutorials/lesson01/linux/eclipse/index.php
+   http://lazyfoo.net/SDL_tutorials/lesson01/linux/eclipse/index.php
 
-http://lazyfoo.net/SDL_tutorials/lesson03/linux/eclipse/index.php
+   http://lazyfoo.net/SDL_tutorials/lesson03/linux/eclipse/index.php
 
 3. Go back and underneath C/C++ Build, click on Tool Chain Editor. Make sure the Current toolchain is Linux GCC and the Current builder is Gnu Make Builder. Click OK.
 
