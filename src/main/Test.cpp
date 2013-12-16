@@ -154,8 +154,9 @@ int main(int argc, char* argv[]) {
       vector<Figure*>* collisions = editor->decode();
 
       // create a player you want to play as and push it to the collisions container
-      PlayerFigure *rf = new PlayerFigure(100, info->bg_w - foo.getSDL_Surface()->h / 2,
-            foo, screen, FS, G, FJS, FNC, info->bg_w, info->bg_h);
+      PlayerFigure *rf = new PlayerFigure(100,
+            info->bg_w - foo.getSDL_Surface()->h / 2, foo, screen, FS, G, FJS,
+            FNC, info->bg_w, info->bg_h);
       collisions->push_back(rf);
 
       // start music and set volume
@@ -193,11 +194,13 @@ int main(int argc, char* argv[]) {
          // blit background image to screen with respect to the camera following Player Figure
          applySurface(0, 0, bgnd, screen, rf->getCameraClip());
 
-         // draw all figures but temp Figs and player
+         // update and draw all figures within the collisions vector
          for (unsigned int i = 0; i < collisions->size(); i++) {
             if (typeid(*(*collisions)[i]) == typeid(TempFigure)) {
                TempFigure* t = static_cast<TempFigure*>((*collisions)[i]);
-               t->move(*collisions, 0);
+               t->move(*collisions, 0);   // the coin needs to disappear/update (hence the
+                                          // move method) but not move in the
+                                          // x or y direction (hence the 0 as the 2nd arg)
                t->show(rf->getCameraClip());
             }
             else
