@@ -196,6 +196,7 @@ int main(int argc, char* argv[]) {
 
          // update and draw all figures within the collisions vector
          for (unsigned int i = 0; i < collisions->size(); i++) {
+            // if a coin is found
             if (typeid(*(*collisions)[i]) == typeid(TempFigure)) {
                TempFigure* t = static_cast<TempFigure*>((*collisions)[i]);
                t->move(*collisions, 0);   // the coin needs to disappear/update (hence the
@@ -203,6 +204,8 @@ int main(int argc, char* argv[]) {
                                           // x or y direction (hence the 0 as the 2nd arg)
                t->show(rf->getCameraClip());
             }
+
+            // if the figure is not a coin
             else
                (*collisions)[i]->show(rf->getCameraClip());
          }
