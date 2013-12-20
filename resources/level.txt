@@ -13,11 +13,9 @@ images/rectangle.png
 images/rectangle.png
 616 7 1191 670 0 4 3 1
 images/grab.png
-246 154 1191 670 0 4 1 1
-images/coin.png
-190 171 1191 670 0 4 1 1
-images/coin.png
 616 241 1191 670 0 4 1 1
 images/coin.png
 688 240 1191 670 0 4 1 1
+images/coin.png
+291 369 1191 670 0 4 1 1
 images/coin.png
