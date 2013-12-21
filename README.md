@@ -16,9 +16,11 @@ Eclipse Kepler 4.3 for C/C++ Developers - http://www.eclipse.org/downloads/packa
 
 4. In the terminal,
 
-    ./setup
-    
-    ./run
+```
+./setup
+
+./run
+``` 
 
 5. If project runs fine, import to Eclipse
 
