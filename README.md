@@ -11,6 +11,7 @@ Eclipse Kepler 4.3 for C/C++ Developers - http://www.eclipse.org/downloads/packa
 2. Clone the project to your local filesystem
 3. cd to the parent directory of the repository
 4. In the terminal,
+
     ./setup
     ./run
 
