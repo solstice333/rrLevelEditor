@@ -3,19 +3,21 @@
 ##Dependencies##
 SDL 1.2, SDL_image 1.2, SDL_mixer 1.2, SDL_ttf 2.0
 
-    test
-
 ##Suggested Developer Tools##
 Eclipse Kepler 4.3 for C/C++ Developers - http://www.eclipse.org/downloads/packages/eclipse-ide-cc-developers/keplersr1
 
 ##How to Setup and Build Using Eclipse on Ubuntu 13.10##
+
 1. Fork the project 
+
 2. Clone the project to your local filesystem
+
 3. cd to the parent directory of the repository
+
 4. In the terminal,
 
     ./setup
-
+    
     ./run
 
 5. If project runs fine, import to Eclipse
