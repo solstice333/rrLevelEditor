@@ -3,27 +3,18 @@
 ##Dependencies##
 SDL 1.2, SDL_image 1.2, SDL_mixer 1.2, SDL_ttf 2.0
 
-For those who have Advanced Packaging Tool available, you can enter the following command in the terminal:
-    
-    apt-get install libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev
-
 ##Suggested Developer Tools##
 Eclipse Kepler 4.3 for C/C++ Developers - http://www.eclipse.org/downloads/packages/eclipse-ide-cc-developers/keplersr1
 
 ##How to Setup and Build Using Eclipse on Ubuntu 13.10##
-1. After forking the project and using the clone URL to make a local copy (git clone <clone URL>), open Eclipse and import the project.
+1. Fork the project 
+2. Clone the project to your local filesystem
+3. cd to the parent directory of the repository
+4. In the terminal,
+    ./setup
+    ./run
 
-2. Right click on the project and click on Properties. Under C/C++ Build, click on Settings. Go to the Tool Settings tab and underneath GCC C++ Linker, click on Libraries. In the Libraries(-l) section add "SDL", "SDL_image", "SDL_mixer", and "SDL_ttf" all separately.
-
-   See the following links for more information and images:
-
-   http://lazyfoo.net/SDL_tutorials/lesson01/linux/eclipse/index.php
-
-   http://lazyfoo.net/SDL_tutorials/lesson03/linux/eclipse/index.php
-
-3. Go back and underneath C/C++ Build, click on Tool Chain Editor. Make sure the Current toolchain is Linux GCC and the Current builder is Gnu Make Builder. Click OK.
-
-4. Right click on the project inside Project Explorer and click "Build Project". Next hit Ctrl + F11 to run. Instructions for how to use the level editor are below.
+5. If project runs fine, import to Eclipse
 
 ##So this is a VERY basic level editor!##
 ***_To Add Figures_***
@@ -51,4 +42,5 @@ Eclipse Kepler 4.3 for C/C++ Developers - http://www.eclipse.org/downloads/packa
 1. Simply restart the editor
 
 ##Playing Your Level##
-Use w, a, s, d to move, and the mouse with left click to aim and grab!
+Close the level editor window to load and play your level.
+Use w, a, s, d to move, and the mouse with left click to aim and grab the clouds!
