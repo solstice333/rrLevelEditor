@@ -128,7 +128,7 @@ int main(int argc, char* argv[]) {
       // basic event loop variables - quit, event, timer.
       double FS = 200;     // figure speed
       double G = 4;        // gravity
-      double FJS = 3;      // figure jump strength
+      double FJS = 2;      // figure jump strength
       int FNC = 4;         // figure number of clips
 
       bool quit = false;   // boolean quit to exit out of event loop

@@ -1,21 +1,41 @@
 1191 670 900 550
 images/bgnd.jpg
 resources/tristam.mp3
-1012 327 1191 670 0 0 0 1
+482 228 1191 670 0 0 0 1
 images/rectangle.png
-602 319 1191 670 0 0 0 1
+520 228 1191 670 0 0 0 1
 images/rectangle.png
-640 319 1191 670 0 0 0 1
+556 229 1191 670 0 0 0 1
 images/rectangle.png
-680 319 1191 670 0 0 0 1
+590 230 1191 670 0 0 0 1
 images/rectangle.png
-720 319 1191 670 0 0 0 1
+372 205 1191 670 0 0 0 1
 images/rectangle.png
-616 7 1191 670 0 4 3 1
+284 165 1191 670 0 0 0 1
+images/rectangle.png
+195 109 1191 670 0 0 0 1
+images/rectangle.png
+82 43 1191 670 0 0 0 1
+images/rectangle.png
+10 16 1191 670 0 0 0 1
+images/rectangle.png
+482 149 1191 670 0 4 1 1
+images/coin.png
+544 152 1191 670 0 4 1 1
+images/coin.png
+598 146 1191 670 0 4 1 1
+images/coin.png
+1027 429 1191 670 0 0 0 1
+images/rectangle.png
+1067 429 1191 670 0 0 0 1
+images/rectangle.png
+1106 429 1191 670 0 0 0 1
+images/rectangle.png
+1032 331 1191 670 0 4 1 1
+images/coin.png
+1092 329 1191 670 0 4 1 1
+images/coin.png
+1038 131 1191 670 0 4 3 1
 images/grab.png
-616 241 1191 670 0 4 1 1
-images/coin.png
-688 240 1191 670 0 4 1 1
-images/coin.png
-291 369 1191 670 0 4 1 1
-images/coin.png
+315 19 1191 670 0 4 3 1
+images/grab.png
