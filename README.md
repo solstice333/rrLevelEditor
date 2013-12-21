@@ -12,9 +12,9 @@ Eclipse Kepler 4.3 for C/C++ Developers - http://www.eclipse.org/downloads/packa
 3. cd to the parent directory of the repository
 4. In the terminal,
 
-    ./setup
+     ./setup
 
-    ./run
+     ./run
 
 5. If project runs fine, import to Eclipse
 
