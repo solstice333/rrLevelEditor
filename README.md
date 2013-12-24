@@ -1,7 +1,7 @@
 #Level Editor Using SDLGameEngine API#
 
 ##Dependencies##
-SDL 1.2, SDL_image 1.2, SDL_mixer 1.2, SDL_ttf 2.0
+SDL 1.2, SDL_image 1.2, SDL_mixer 1.2, SDL_ttf 2.0 make
 
 ##Suggested Developer Tools##
 Eclipse Kepler 4.3 for C/C++ Developers - http://www.eclipse.org/downloads/packages/eclipse-ide-cc-developers/keplersr1
